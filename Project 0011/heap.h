@@ -16,9 +16,9 @@ class MinHeap
     MinHeap(KeyType initA[], int n);        // construct heap from array
     MinHeap(const MinHeap<KeyType>& heap);  // copy constructor
     ~MinHeap();                             // destructor
-      
+
     void heapSort(KeyType sorted[]);  // heapsort, return result in sorted
-    
+
     MinHeap<KeyType>& operator=(const MinHeap<KeyType>& heap);  // assignment operator
     std::string toString() const;     // return string representation
 
@@ -26,8 +26,8 @@ class MinHeap
     KeyType *A;     // array containing the heap
     int heapSize;   // size of the heap
     int capacity;   // size of A
-  
-	void heapify(int index);          // heapify subheap rooted at index
+
+	  void heapify(int index);          // heapify subheap rooted at index
     void buildHeap();                 // build heap
   	int leftChild(int index) { return 2 * index + 1; }  // return index of left child
   	int rightChild(int index) { return 2 * index + 2; } // return index of right child
