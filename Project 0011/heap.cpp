@@ -19,8 +19,9 @@ Post: Construct a new MinHeap data type with default size set to n
 template <class KeyType>
 MinHeap<KeyType>::MinHeap(int n)
 {
-  heapSize = capacity = n;
-  A = new KeyType[capacity];
+  heapSize = 0;
+  capacity = n;
+  A = new KeyType*[capacity];
 }
 /*==============================================================================
 MinHeap Array Constructor
@@ -30,8 +31,8 @@ Post: Construct a heap from array initA with contents from the heap from array A
 template <class KeyType>
 MinHeap<KeyType>::MinHeap(KeyType initA[], int n)
 {
-  heapSize = capacity = n;
-  A = new KeyType[capacity];
+  capacity = n;
+  A = new KeyType*[capacity];
 
   // Copy the array into the heap's internal array
   for (int i = 0; i < n; i++)
@@ -51,11 +52,13 @@ MinHeap<KeyType>::MinHeap(const MinHeap<KeyType>& heap)
 {
   heapSize = heap.heapSize;
   capacity = heap.capacity;
-  A = new KeyType[capacity];
+  A = new KeyType*[capacity];
 
   // copy the array
-  for (int i = 0; i < heap.heapSize; i++)
-    A[i] = heap.A[i];
+  for (int i = 0; i < heapSize; i++)
+    A[i] = heap[i];
+
+  buildHeap();
 }
 
 /*=======================================================
@@ -67,7 +70,7 @@ template <class KeyType>
 MinHeap<KeyType>::~MinHeap()
 {
   if(A)
-    delete[] A;
+    delete []A;
 }
 
 /*===================================================
@@ -99,7 +102,7 @@ Pre: a list of Key Types
 Post: sorted list of Key Types
 ============================*/
 template <class KeyType>
-void MinHeap<KeyType>::heapSort(KeyType sorted[])
+void MinHeap<KeyType>::heapSort(KeyType* sorted[])
 {
   // Build heap (rearrange array)
   buildHeap();
@@ -133,11 +136,11 @@ void MinHeap<KeyType>::heapify(int index)
   int r = rightChild(index);
 
   // If left child is smaller than root
-  if (l <= heapSize && A[l] < A[smallest])
+  if (l <= heapSize && *(A[l]) < *(A[smallest]))
     smallest = l;
 
   // If right child is smaller than smallest so far
-  if (r <= heapSize && A[r] < A[smallest])
+  if (r <= heapSize && *(A[r]) < *(A[smallest]))
     smallest = r;
 
   // If smallest is not root
@@ -148,6 +151,7 @@ void MinHeap<KeyType>::heapify(int index)
     // Recursively heapify the affected sub-tree
     heapify(smallest);
   }
+  return;
 }
 
 /*============================================
@@ -173,7 +177,7 @@ Post: The 2 elements' index positions are swapped
 template <class KeyType>
 void MinHeap<KeyType>::swap(int index1, int index2)
 {
-  KeyType temp = A[index1];
+  KeyType* temp = A[index1];
   A[index1] = A[index2];
   A[index2] = temp;
 }
@@ -186,13 +190,7 @@ Post: Construct a MinHeap data type with same contents as heap
 template <class KeyType>
 void MinHeap<KeyType>::copy(const MinHeap<KeyType>& heap)
 {
-  heapSize = heap.heapSize;
-  capacity = heap.capacity;
-  A = new KeyType[capacity];
-
-  // copy the array
-  for (int i = 0; i < heap.heapSize; i++)
-    A[i] = heap.A[i];
+  MinHeap(A);
 }
 
 /*===============================================
@@ -203,6 +201,7 @@ Post: Clean up the MinHeap class
 template <class KeyType>
 void MinHeap<KeyType>::destroy()
 {
-  if(A)
-    delete[] A;
+  ~MinHeap();
 }
+
+#endif

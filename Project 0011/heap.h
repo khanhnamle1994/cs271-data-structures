@@ -13,17 +13,17 @@ class MinHeap
 {
   public:
     MinHeap(int n = DEFAULT_SIZE);          // default constructor
-    MinHeap(KeyType initA[], int n);        // construct heap from array
+    MinHeap(KeyType* initA[], int n);        // construct heap from array
     MinHeap(const MinHeap<KeyType>& heap);  // copy constructor
     ~MinHeap();                             // destructor
 
-    void heapSort(KeyType sorted[]);  // heapsort, return result in sorted
+    void heapSort(KeyType* sorted[]);  // heapsort, return result in sorted
 
     MinHeap<KeyType>& operator=(const MinHeap<KeyType>& heap);  // assignment operator
     std::string toString() const;     // return string representation
 
-  private:
-    KeyType *A;     // array containing the heap
+  protected:
+    KeyType **A;     // array containing the heap
     int heapSize;   // size of the heap
     int capacity;   // size of A
 
