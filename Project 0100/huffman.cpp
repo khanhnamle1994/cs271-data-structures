@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-//#include "node.h"
+#include "node.h"
 using namespace std;
 
 //buidVector()
@@ -22,8 +22,11 @@ newNode(char c)
 int begin(int argc, char *argv[])
 {
 	char *temp;
-	vector <int> vect;
+	std::vector<MinHeapNode> vect;
 	bool contains = false;
+
+	//MinHeapNode<char> node;
+	MinHeapNode node;
 
 	if (argc == 3){
 		temp = argv[1];
@@ -56,6 +59,7 @@ int begin(int argc, char *argv[])
 
 					}
 			}
+		}
 
 /*
 		else if (blank == 'd'){
@@ -115,8 +119,9 @@ int begin(int argc, char *argv[])
 }
 
 
-int main (int argc, char *argv[])
+int main(int argc, char *argv[])
 {
+
 	begin(argc, *argv[]);
 /*
 	char *temp;

@@ -9,15 +9,21 @@
 #ifndef NODE_H
 #define NODE_H
 
+//template <class KeyType>
 class MinHeapNode
 {
-private:
+protected:
+/*
   char data; // One of the input characters
   unsigned freq; // Frequency of the character
   MinHeapNode * left, * right; // Left and right child of this node
+*/
+
 
 public:
-  std::vector<MinHeapNode> vect;
+  char data; // One of the input characters
+  unsigned freq; // Frequency of the character
+  MinHeapNode * left, * right; // Left and right child of this node
 
   // Default Constructor
   MinHeapNode()
@@ -34,6 +40,8 @@ public:
     n->freq = frequency;
 
   }
+
+
 
   /*
   std::string toString() const // return string representation
@@ -58,10 +66,12 @@ public:
   bool operator < (MinHeapNode* n) {// override function
     return (freq < n->freq);
   }
-
-  std::ostream& operator<<(std::ostream& stream, const MinHeapNode* n); // stream operator
 };
 
-#include  "huffman.cpp"
+//template <class KeyType>
+std::ostream& operator<<(std::ostream& stream, const MinHeapNode* n); // stream operator
+
+
+//#include  "huffman.cpp"
 
 #endif
