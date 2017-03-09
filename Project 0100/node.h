@@ -14,19 +14,15 @@ using namespace std;
 //template <class KeyType>
 class MinHeapNode
 {
-protected:
-/*
-  char data; // One of the input characters
-  unsigned freq; // Frequency of the character
-  MinHeapNode * left, * right; // Left and right child of this node
-*/
-
 
 public:
   char data; // One of the input characters
   string code;
   unsigned freq; // Frequency of the character
-  MinHeapNode * left, * right, * parent; // Left and right child of this node
+  MinHeapNode * left;
+  MinHeapNode * right;
+  MinHeapNode * parent;
+  //,  right,  parent; // Left and right child of this node
 
   // Default Constructor
   MinHeapNode()
@@ -38,12 +34,16 @@ public:
   }
 
 
-  MinHeapNode(char character, unsigned frequency) // construct node
+MinHeapNode* newNode(char character, unsigned frequency) // construct node
   {
+    MinHeapNode n;
 
     data = character;
+    cout << "worked" << endl;
     freq = frequency;
-
+    left = NULL;
+    right = NULL;
+    //return n;
     //n.data = character;
     //n.freq = frequency;
 
