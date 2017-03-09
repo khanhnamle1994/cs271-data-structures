@@ -6,6 +6,8 @@
 #include <sstream>
 #include <vector>
 
+using namespace std;
+
 #ifndef NODE_H
 #define NODE_H
 
@@ -22,8 +24,9 @@ protected:
 
 public:
   char data; // One of the input characters
+  string code;
   unsigned freq; // Frequency of the character
-  MinHeapNode * left, * right; // Left and right child of this node
+  MinHeapNode * left, * right, * parent; // Left and right child of this node
 
   // Default Constructor
   MinHeapNode()
@@ -33,43 +36,41 @@ public:
     left = NULL;
     right = NULL;
   }
+
+
   MinHeapNode(char character, unsigned frequency) // construct node
   {
-    MinHeapNode * n;
-    n->data = character;
-    n->freq = frequency;
+
+    data = character;
+    freq = frequency;
+
+    //n.data = character;
+    //n.freq = frequency;
 
   }
 
 
 
-  /*
+
   std::string toString() const // return string representation
   {
-  	stringstream result; //sets variable to be returned
-  	int x = 0;
-  	result << "[";
-  	int size = vect.size();
-
-  	while(x < vect.size()) // inserts values into "result" while traversing list
-  	{
-  		result << *(vect[x]));
-  		x++;
-  		if(x != size)
-  			result << ",";
-  	}
-  	result << "]";
-  	return result.str();
+      stringstream result;
+			result << "[" << data << ":" << freq << "]";
+      return result.str();
   }
-*/
 
-  bool operator < (MinHeapNode* n) {// override function
-    return (freq < n->freq);
+
+  bool operator < (MinHeapNode n) {// override function
+    return (freq < n.freq);
   }
 };
 
 //template <class KeyType>
-std::ostream& operator<<(std::ostream& stream, const MinHeapNode* n); // stream operator
+std::ostream& operator<<(std::ostream& stream, const MinHeapNode& n) // stream operator
+{
+  stream << n.toString();
+  return stream;
+}
 
 
 //#include  "huffman.cpp"

@@ -95,10 +95,10 @@ Postcondition: The value of element index's key has the new value key
 template <class KeyType>
 void MinPriorityQueue<KeyType>::decreaseKey(int index, KeyType* key)
 {
-	if (*key > *(A[index]))
+	if (*(A[index]) < *key)
 		throw KeyError();
 	A[index] = key;
-	while ((index > 0) && (*(A[parent(index)]) > *(A[index]))) {
+	while ((index > 0) && (*(A[index]) < *(A[parent(index)]))) {
 		swap(index, parent(index));
 		index = parent(index);
 	}
@@ -178,5 +178,19 @@ std::string MinPriorityQueue<KeyType>::toString() const
 	result << "]";
 	return result.str();
 }
+
+
+/*================================================================================
+std::string toString() const          // return a string representation of the MPQ
+Precondition: A priority queue to be converted to a string
+Postcondition: Traverses the array and uses << to output each element of the array
+================================================================================*/
+template <class KeyType>
+std::ostream& operator<<(std::ostream& stream, const MinPriorityQueue<KeyType>& pq)
+{
+	stream << pq.toString();
+  return stream;
+}
+
 
 #endif
