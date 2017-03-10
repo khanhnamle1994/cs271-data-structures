@@ -1,4 +1,5 @@
 //pq.cpp
+// Kevin Ly & James Le
 
 #ifndef pq_cpp
 #define pq_cpp
@@ -177,66 +178,6 @@ std::string MinPriorityQueue<KeyType>::toString() const
 	}
 	result << "]";
 	return result.str();
-}
-
-// In-Order Traversal
-template<class KeyType>
-void MinPriorityQueue<KeyType>::inOrder(int index) {
-	// left, cur, right
-  if( ((2 * index + 1) < capacity) && (A[2 * index + 1] != NULL) )
-    inOrder(2 * index + 1);
-  cout << *A[index] << " ";
-  if( ((2 * index + 2) < capacity) && (A[2 * index + 2] != NULL) )
-    inOrder(2 * index + 2);
-}
-
-template<class KeyType>
-void MinPriorityQueue<KeyType>::inOrderTraversal() {
-	if(empty()) {
-		cout << "Priority Queue is empty." << endl;
-	}
-	inOrder(0);
-	cout << endl;
-}
-
-// Post-Order Traversal
-template<class KeyType>
-void MinPriorityQueue<KeyType>::postOrder(int index) {
-	// left, right, cur
-  if( ((2 * index + 1) < capacity) && (A[2 * index + 1] != NULL) )
-    inOrder(2 * index + 1);
-  if( ((2 * index + 2) < capacity) && (A[2 * index + 2] != NULL) )
-    inOrder(2 * index + 2);
-	cout << *A[index] << " ";
-}
-
-template<class KeyType>
-void MinPriorityQueue<KeyType>::postOrderTraversal() {
-	if(empty()) {
-		cout << "Priority Queue is empty." << endl;
-	}
-	postOrder(0);
-	cout << endl;
-}
-
-// Pre-Order Traversal
-template<class KeyType>
-void MinPriorityQueue<KeyType>::preOrder(int index) {
-	// cur, left, right
-	cout << *A[index] << " ";
-	if( ((2 * index + 1) < capacity) && (A[2 * index + 1] != NULL) )
-    inOrder(2 * index + 1);
-  if( ((2 * index + 2) < capacity) && (A[2 * index + 2] != NULL) )
-    inOrder(2 * index + 2);
-}
-
-template<class KeyType>
-void MinPriorityQueue<KeyType>::preOrderTraversal() {
-	if(empty()) {
-		cout << "Priority Queue is empty." << endl;
-	}
-	preOrder(0);
-	cout << endl;
 }
 
 /*================================================================================

@@ -1,4 +1,5 @@
 // node.h
+// Kevin Ly & James Le
 
 #include <string>
 #include <fstream>
@@ -28,7 +29,9 @@ public:
   MinHeapNode * parent;
   //,  right,  parent; // Left and right child of this node
 
-  // Default Constructor
+//================================================
+//Default Node Constructor
+//================================================
   MinHeapNode()
   {
     data = '\0';
@@ -39,6 +42,11 @@ public:
   }
 
 
+/*================================================
+MinHeapNode* newNode(char character, unsigned frequency)
+Precondition: Requires a char character and a int frequency
+Postcondition: Allocates a newNode with data=character and freq=frequency
+================================================*/
 MinHeapNode* newNode(char character, unsigned frequency) // construct node
   {
     MinHeapNode* n;
@@ -48,23 +56,29 @@ MinHeapNode* newNode(char character, unsigned frequency) // construct node
     n->freq = frequency;
     n->left = NULL;
     n->right = NULL;
-    n->code = '\0';
+    n->code = "";
     return n;
 
   }
 
 
 
+/*================================================
+std::string toString() const
+Converts Node into string output: [data: frequency]
+================================================*/
+std::string toString() const // return string representation
+{
+    stringstream result;
+		result << "[" << data << ":" << freq << "]";
+    return result.str();
+}
 
-  std::string toString() const // return string representation
-  {
-      stringstream result;
-			result << "[" << data << ":" << freq << "]";
-      return result.str();
-  }
-
-
-  bool operator < (MinHeapNode n) {// override function
+/*================================================
+bool operator < (MinHeapNode n)
+Overwrites < to compare frequencies
+================================================*/
+bool operator < (MinHeapNode n) {// override function
     return (freq < n.freq);
   }
 };

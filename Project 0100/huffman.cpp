@@ -6,65 +6,53 @@
 #include <vector>
 #include "node.h"
 #include "pq.h"
+// Kevin Ly & James Le
+
 
 using namespace std;
 
-/*
-void inOrder(int curIndex) {
-	// inOrderTraversal explores the left, then the current, and finally the right index
-	int l = (2*curIndex + 1);
-	int r = (2*curIndex + 2);
-
-	if (l < capacity and *(A[l]) != NULL)
-		inOrder(l);
-	cout << *(A[curIndex]) << " ";
-	if (r < capacity and *(A[r]) != NULL)
-		inOrder(r);
-}
-
-void inOrderTraversal(MinPriorityQueue<MinHeapNode> &pq) {
-	if (pq.empty()) {
-		cout << "Priority Queue is empty!" << endl;
-	}
-	inOrder(0);
-	cout << endl;
-}
-*/
-
-
+/*================================================
+void makecode(MinHeapNode* Root, string Arr[], int top)
+Precondition: Requires a node (which is the root of the tree),
+							an array of strings, and an integer
+Postcondition: Traverses the tree based on presence of
+							left child and right child. If left, 0 is added to array.
+							if right, 1 is added to arra. Recursively calls itself
+							until it reaches a leaf. That node's code is equal to
+							the array.
+================================================*/
 void makecode(MinHeapNode* Root, string Arr[], int top){
-//cout << "MAKECODE CALLED" << endl;
-//cout << "["<< Root->data << ":" << Root->freq << "]" <<endl;
-//cout << "root.left = " << (Root->left)->data <<endl;
 
 string tempcode;
 	if (Root->left != NULL){
-		//cout << "entered root.left != NULL" << endl;
 		Arr[top] = "0";
-		//cout << "["<< (Root->left)->data << ": " << (Root->left)->freq << "]"<<endl;
 		makecode(Root->left, Arr, top+1);
-		//cout << "leaving root.left != NULL" << endl;
 
 
 	}
-	//cout << "root -> left == NULL" << endl;
 	if (Root->right != NULL){
 		Arr[top] = "1";
 		makecode(Root->right, Arr, top+1);
 
 	}
 	if((Root->right == NULL) and (Root->left == NULL)){
-		cout << Root->data << "= ";
 		for(int i=0; i < top; i++){
-			//cout << "Arr[i]= " << Arr[i] << endl;
 			tempcode += Arr[i];
-			//cout << Root->code;
 		}
-		cout << tempcode<< endl;
 		Root->code = tempcode;
 	}
 }
 
+/*================================================
+MinHeapNode* buildTree(MinPriorityQueue<MinHeapNode> &pq)
+Precondition: Requires a priority queue
+Postcondition: Extracts the two minimum nodes based on
+							their frequency and adds them together to make
+							a new node whose children are the nodes extracted.
+							The new node is then added to the pq.
+							Continues until only root is left in pq.
+							Returns the root of the tree.
+================================================*/
 MinHeapNode* buildTree(MinPriorityQueue<MinHeapNode> &pq)
 {
 //cout << "======Start of buildTree========" << endl;
@@ -75,36 +63,37 @@ MinHeapNode* topnode;
 // Iterate while size of priority queue doesn't become 1
 while (pq.length() != 1)
 {
-  // Extract the 2 minimum freq items from priority queue
+
 	MinHeapNode temp;
 
 	leftnode = pq.extractMin();
 	rightnode = pq.extractMin();
-
-
-	//cout << "leftnode = [" << leftnode->data << ":" << leftnode->freq << "]" << endl;
-	//cout << "rightnode = [" << rightnode->data << ":" << rightnode->freq << "]" << endl;
-
-  // Create a new internal node with frequency equal to the sum of the 2 nodes frequencies.
-  // Make the 2 extracted node as left and right children of this new node. Add this node
-  // to the minheap.
 	topnode = temp.newNode('\0', (leftnode->freq + rightnode->freq));
 
 	topnode->left = leftnode;
 	topnode->right = rightnode;
-
-
-	//cout << "topnode = [" << topnode->data << ":" << topnode->freq << "]" << endl;
-	//cout << "topnode = " << topnode << endl;
   pq.insert(topnode);
-	//cout << "Priority Q: " << pq << endl;
-	//cout << "-------" << endl;
+
 
 }
 		return pq.extractMin();
 }
-//===========End of BuildTree==================================================
 
+/*================================================
+std::vector<MinHeapNode> compress(char *in, char *out)
+Precondition: Requires a file to be compressed and a file to
+							be compressed to.
+Postcondition: Produces a file made up of a string of 1's
+							and 0's. Traverses the in file and calculates
+							the frequency of each character.The node,
+							with character and frequency, is then added
+							to a vector. Each node is then added to a priority
+							queue. A tree is built based on the pq. Calls
+							makcode function to assign strings of 1's and 0's
+							to represent each character. These strings are then
+							added to the out file. Header of out file gives each
+							character and their codes.
+================================================*/
 std::vector<MinHeapNode> compress(char *in, char *out)
 {
 	MinHeapNode* RootNode;
@@ -120,9 +109,7 @@ std::vector<MinHeapNode> compress(char *in, char *out)
 			char x;
 			while ( in_file.get ( x ) ){ //returns false if end of file is reached
 				node.data = x;
-				//cout << "node.data = " << node.data << endl;
 				for(int i = 0; i < vect.size(); i++){
-					//cout << "vect[i].data = " << vect[i].data << endl;
 					contains = false;
 					if(x == vect[i].data){
 						node.freq++;
@@ -136,71 +123,75 @@ std::vector<MinHeapNode> compress(char *in, char *out)
 				if((vect.size() == 0) or (contains == false)){
 					node.freq = 1;
 					vect.push_back(node);
-					//cout << "A new node for " << x << " has been inserted" << endl;
-				}
 
-				//cout << "vector size = "<< vect.size() << endl;
-					//cout << "===================" << endl;
+				}
 				}
 				in_file.close();
 			}
 
-//==========Printing the Vector===========
-		cout << "======Vector======" << endl;
-		cout << "{" ;
-		for(int j = 0; j < vect.size(); j++){
-			cout << "[" << vect[j].data << ":" << vect[j].freq << "]";
-			if (j < vect.size()-1)
-				cout << ", ";
-		}
-		cout << "}" << endl;
-//=========================================
-		//cout << "======Priority Queue======" << endl;
-		MinPriorityQueue<MinHeapNode> pq;
-		for (int k = 0; k < vect.size(); k++){
-			pq.insert(&vect[k]);
-		}
-		//cout << pq << endl;
-
+//cout << "======Priority Queue======" << endl;
+MinPriorityQueue<MinHeapNode> pq;
+for (int k = 0; k < vect.size(); k++){
+	pq.insert(&vect[k]);
+}
 
 RootNode = buildTree(pq);
 
 MinHeapNode tempNode;
 tempNode = *RootNode;
-string Arr[10000];
+string Arr[100000];
 int top = 0;
 
 makecode(RootNode, Arr, 0);
 //=======Put in out_file========
 ofstream out_file ( out );
-if ( !out_file.is_open() )//  see if file opened
-	cout<<"Could not open out file\n";
-else {
-	for(int j = 0; j < vect.size(); j++){
-		out_file << vect[j].data << vect[j].code <<".";
-	}
-	out_file << "*";
+ifstream in_file2 ( in );
+char x;
 
-	for(int j = 0; j < vect.size(); j++){
-		out_file << vect[j].code;
-	}
-	out_file << endl;
+for(int j = 0; j < vect.size(); j++){
+	if(x = vect[j].data)
+		out_file << vect[j].data << vect[j].code <<".";
 }
+out_file << "*";
+
+
+while(in_file2.get(x)){
+	for(int j = 0; j < vect.size(); j++){
+		if(x == vect[j].data)
+			out_file << vect[j].code;
+	}
+}
+
 return vect;
 }
-//==========End of Compress=============================
 
+/*================================================
+void decompress(char *in, char *out)
+Precondition: Requires a file to be decompressed and a file to
+							decompressed to.
+Postcondition: Reads the in file and makes nodes based on
+							the header (gives character and code). When it
+							encounters a '*', it inserts the following
+							1's and 0's into an array. The code for each
+							character is then compared to the elements
+							of the array. When a code corresponds to a key
+							the index of the key is saved and the following
+							elements are compared to a new (or current) character
+							code. Each time a code is read, it is outputted
+							into the out file.
+================================================*/
 void decompress(char *in, char *out)
 {
 MinHeapNode* RootNode;
 std::vector<MinHeapNode> vect;
 	bool go = true;
+	bool hit = false;
 	string temp;
 	MinHeapNode node;
-	string tempA[10000];
+	string tempA[100000];
 	int A_count = 0;
 
-	string read;
+
 		ifstream in_file ( in );//  argv[2] is a filename to open
 
 		if ( !in_file.is_open() )//  see if file opened
@@ -208,7 +199,6 @@ std::vector<MinHeapNode> vect;
 		else {
 			char x;
 					while(in_file.get ( x )){
-						cout << "x = " << x << endl;
 						if(x != '*'){
 						while(go == true){
 						if(x != '1' and x != '0' and x != '.'){
@@ -222,7 +212,6 @@ std::vector<MinHeapNode> vect;
 						}
 						else if (x=='.'){
 							node.code = temp;
-							cout << "Node's code is: " << temp << endl;
 							vect.push_back(node);
 							go = false;
 						}
@@ -230,31 +219,69 @@ std::vector<MinHeapNode> vect;
 						go = true;
 					}
 
-
-
-						tempA[A_count] = x;
-						A_count++;
+						if(x == '*'){
+							hit = true;
 						}
-						for (int k; k < A_count; k++){
-							cout << tempA[k];
-						}
-						cout << endl;
+						if ((hit == true) and (x == '*')){
 
-/*
-						if(x!='*'){
-						for (int i = 0; i < vect.size(); i++){
-							while(vect[i].code != read){
-								read += x;
-								cout << read << endl;
-							}
-							cout << vect[i].data;
+						}
+						else if((hit == true) and ((x == '1') or (x == '0' ))){
+							tempA[A_count] = x;
+							A_count++;
 						}
 					}
-*/
-					}
+
+
+string tempcode;
+string read = "";
+ofstream out_file ( out );
+int counting = 0;
+int maxsize=0;
+while(counting != A_count){
+		for (int i = 0; i < vect.size(); i++){
+			tempcode = (vect[i].code);
+			string code = "";
+
+			for (int t=0; t < tempcode.size()-1; t++){
+				code += tempcode[t+1];
+				if (code.size() > maxsize)
+					maxsize = code.size();
+			}
+
+			while((vect[i].code != read) and (counting < A_count)){
+				read += tempA[counting];
+				if( code == read){
+					out_file << vect[i].data;
+					break;
+				}
+				if(read.size() >= maxsize)
+					break;
+
+				counting++;
+			}
+
+			if(counting == A_count){
+				break;
+			}
+			else if(code == read){
+				counting++;
+				read = "";
+				break;
+			}
+			else if( (read.size() >= maxsize)){
+				counting = counting - read.size() + 1;
+				read = "";
+			}
+
+
+		}
+
+}
+
+	}
 
 				in_file.close();
-			}
+}
 
 //=====End of Decompressor======================
 int main(int argc, char *argv[])
@@ -276,8 +303,6 @@ int main(int argc, char *argv[])
 			cout << "Error: verify compression (-c) or decompression (-d)" << endl;
 		}
 	}
-
-
 
 }
 
