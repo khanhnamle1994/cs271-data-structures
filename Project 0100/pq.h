@@ -1,5 +1,5 @@
 // pq.h
-// This MinPriorityQueue template class assumes that the class KeyType has 
+// This MinPriorityQueue template class assumes that the class KeyType has
 // overloaded the < operator and the << stream operator.
 
 #ifndef PQ_H
@@ -11,11 +11,11 @@
 template <class KeyType>
 class MinPriorityQueue : public MinHeap<KeyType>
 {
-  public:            
+  public:
     MinPriorityQueue();             // default constructor
     MinPriorityQueue(int n);        // construct an empty MPQ with capacity n
     MinPriorityQueue(const MinPriorityQueue<KeyType>& pq);  // copy constructor
-      
+
     KeyType* minimum() const;                   // return the minimum element
     KeyType* extractMin();                      // delete the minimum element and return it
     void decreaseKey(int index, KeyType* key);  // decrease the value of an element
@@ -23,19 +23,27 @@ class MinPriorityQueue : public MinHeap<KeyType>
     bool empty() const;                         // return whether the MPQ is empty
     int length() const;                         // return the number of keys
     std::string toString() const;               // return a string representation of the MPQ
-    
+
+    // traversal
+    void inOrder(int index);
+    void inOrderTraversal();
+    void postOrder(int index);
+    void postOrderTraversal();
+    void preOrder(int index);
+    void preOrderTraversal();
+
     // Specify that MPQ will be referring to the following members of MinHeap<KeyType>.
-    
+
     using MinHeap<KeyType>::A;
     using MinHeap<KeyType>::heapSize;
     using MinHeap<KeyType>::capacity;
     using MinHeap<KeyType>::parent;
     using MinHeap<KeyType>::swap;
     using MinHeap<KeyType>::heapify;
-    
-    /* The using statements are necessary to resolve ambiguity because  
-       these members do not refer to KeyType.  Alternatively, you could  
-       use this->heapify(0) or MinHeap<KeyType>::heapify(0). 
+
+    /* The using statements are necessary to resolve ambiguity because
+       these members do not refer to KeyType.  Alternatively, you could
+       use this->heapify(0) or MinHeap<KeyType>::heapify(0).
     */
 };
 

@@ -5,7 +5,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
-
+#include "pq.h"
 using namespace std;
 
 #ifndef NODE_H
@@ -14,8 +14,12 @@ using namespace std;
 //template <class KeyType>
 class MinHeapNode
 {
+private:
+
 
 public:
+
+
   char data; // One of the input characters
   string code;
   unsigned freq; // Frequency of the character
@@ -31,21 +35,21 @@ public:
     freq = 0;
     left = NULL;
     right = NULL;
+    code = "";
   }
 
 
 MinHeapNode* newNode(char character, unsigned frequency) // construct node
   {
-    MinHeapNode n;
+    MinHeapNode* n;
 
-    data = character;
-    cout << "worked" << endl;
-    freq = frequency;
-    left = NULL;
-    right = NULL;
-    //return n;
-    //n.data = character;
-    //n.freq = frequency;
+    n = new MinHeapNode();
+    n->data = character;
+    n->freq = frequency;
+    n->left = NULL;
+    n->right = NULL;
+    n->code = '\0';
+    return n;
 
   }
 
