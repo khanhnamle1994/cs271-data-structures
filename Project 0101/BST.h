@@ -34,7 +34,7 @@ public:
   /*---------------Public Functions----------------*/
   bool empty() const; // return true if empty; false otherwise
   KeyType* get(const KeyType& k); // return first element with key equal to k
-  void insert(KeyType* k); // insert k into the tree
+  void insert(KeyType k); // insert k into the tree
   void remove(const KeyType& k); // delete first element with key equal to k
   KeyType* maximum() const; // return the maximum element
   KeyType* minimum() const; // return the minimum element
@@ -52,11 +52,11 @@ protected:
   int tree_size;
 
   /*----------Private Functions----------*/
-  void insert(const KeyType& k, BinaryNode<KeyType> * &ptr);
+  void insert(const KeyType& k, BinaryNode<KeyType> * &ptr, BinaryNode<KeyType> * &dad);
   void remove(const KeyType& k, BinaryNode<KeyType> * &ptr);
-  void get(const KeyType& k, BinaryNode<KeyType> * ptr);
+  BinaryNode<KeyType> * get(const KeyType& k, BinaryNode<KeyType> * ptr);
   int maximum(BinaryNode<KeyType> * ptr);
-  int minimum(BinaryNode<KeyType> * ptr);
+  BinaryNode<KeyType> * minimum(BinaryNode<KeyType> * ptr);
   void successor(const KeyType& k, BinaryNode<KeyType> * ptr);
   void predecessor(const KeyType& k, BinaryNode<KeyType> * ptr);
   void clearTree(BinaryNode<KeyType> * &ptr);

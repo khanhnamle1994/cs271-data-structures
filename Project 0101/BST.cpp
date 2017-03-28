@@ -75,10 +75,11 @@ KeyType* BST<KeyType>::get(const KeyType& k)
 }
 
 template <class KeyType>
-void BST<KeyType>::get(const KeyType& k, BinaryNode<KeyType> * ptr)
+BinaryNode<KeyType> * BST<KeyType>::get(const KeyType& k, BinaryNode<KeyType> * ptr)
 {
   while (ptr)
   {
+    cout << "prt->data=" << ptr->data << endl;
     if (k < ptr->data)
       ptr = ptr->left;
     else if (ptr->data < k)
@@ -90,23 +91,27 @@ void BST<KeyType>::get(const KeyType& k, BinaryNode<KeyType> * ptr)
 }
 
 template <class KeyType>
-void BST<KeyType>::insert(KeyType* k)
+void BST<KeyType>::insert(KeyType k)
 {
-  insert(k, root);
+  insert(k, root, root);
 }
 
 template <class KeyType>
-void BST<KeyType>::insert(const KeyType& k, BinaryNode<KeyType> * &ptr)
+void BST<KeyType>::insert(const KeyType& k, BinaryNode<KeyType> * &ptr, BinaryNode<KeyType> * &dad)
 {
   if (ptr == NULL)
   {
     ptr = new BinaryNode<KeyType>(k);
+    if(tree_size != 0){
+      ptr->parent = dad;
+    }
     tree_size++;
-  } else {
+  }
+  else {
     if (k < ptr->data)
-      insert(k, ptr->left);
+      insert(k, ptr->left, ptr);
     else
-      insert(k, ptr->right);
+      insert(k, ptr->right, ptr);
   }
 }
 
@@ -131,16 +136,24 @@ void BST<KeyType>::remove(const KeyType& k, BinaryNode<KeyType> * &ptr)
     if (k->parent != ptr) {
       transplant(k, k->right);
       k->right = ptr->right;
+      //cout << "working" << endl;
       k->right->parent = k;
     }
-    transplant(ptr, k);
+
+
+    //transplant(ptr, k);
+    //cout << "ptr->data =" << ptr->data << endl;
+    //cout << "k->data =" << k->data << endl;
     k->left = ptr->left;
-    k->left->parent = k;
+    ptr->left->parent = k;
+    k->parent = ptr->parent;
+    delete ptr;
   }
+  tree_size--;
 }
 
 // The Transplant method replaces the subtree rooted at node u with the subtree rooted at node v,
-// node u's parent becomes node v's parent, and u's parent ends up having v as its appropriate child.
+// node cout << "worked" << endl;u's parent becomes node v's parent, and u's parent ends up having v as its appropriate child.
 template <class KeyType>
 void BST<KeyType>::transplant(BinaryNode<KeyType> * u, BinaryNode<KeyType> * v)
 {
@@ -186,7 +199,7 @@ KeyType* BST<KeyType>::minimum() const
 
 // Iterative version of minimum
 template <class KeyType>
-int BST<KeyType>::minimum(BinaryNode<KeyType> * ptr)
+BinaryNode<KeyType> * BST<KeyType>::minimum(BinaryNode<KeyType> * ptr)
 {
   if (ptr)
   {
