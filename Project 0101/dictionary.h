@@ -4,13 +4,13 @@
 #include <iostream>
 #include "BST.h"
 
+
 template <class KeyType>
 class Dictionary : public BST<KeyType>
 {
 public:
   Dictionary(); // default constructor
   Dictionary(const Dictionary<KeyType>& dict); // copy constructor
-  ~Dictionary(); // destructor
 
   bool dict_empty() const; // return whether the dictionary is empty
   KeyType* dict_get(const KeyType& k); // return an element with key k in dictionary

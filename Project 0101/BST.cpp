@@ -297,13 +297,19 @@ std::string BST<KeyType>::inOrder() const
 template <class KeyType>
 std::string BST<KeyType>::inOrder(BinaryNode<KeyType> *ptr) const
 {
+
   if (ptr == NULL)
     return "";
+
   ostringstream ss;
-  ss << inOrder(ptr->left);
-  ss << ptr->data << " ";
-  ss << inOrder(ptr->right);
+    ss << inOrder(ptr->left);
+    ss << ptr->data << " ";
+    cout << "ptr->data = "<< ptr->data << endl;
+    ss << inOrder(ptr->right);
+
   return ss.str();
+
+
 }
 
 template <class KeyType>

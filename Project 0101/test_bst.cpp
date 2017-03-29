@@ -307,7 +307,6 @@ void test_minimum()
 	else
 		cout << "tree NOT empty" << endl;
 	*bst.get(4);
-
 }
 
 void test_successor()
@@ -325,9 +324,12 @@ void test_successor()
 	bst.insert(d);
 	bst.insert(e);
 	bst.insert(f);
-
-
 	cout << "3, 5, 2, 6, 4, 1 inserted" << endl;
+
+	//bst.inOrder();
+
+
+
 	*bst.get(3);
 	*bst.get(5);
 	*bst.get(2);
@@ -337,40 +339,7 @@ void test_successor()
 
 
 	cout <<  *bst.successor(3) << endl;
-/*
-	bst.remove(2);
-	cout << "2 was removed" << endl;
-	*bst.get(2);
-	*bst.get(1);
-	cout << "Minimum = " << *bst.minimum() << endl;
 
-	bst.remove(3);
-	cout << "3 was removed" << endl;
-	*bst.get(3);
-	*bst.get(4);
-	cout << "Minimum = " << *bst.minimum() << endl;
-
-	bst.remove(5);
-	cout << "5 was removed" << endl;
-	*bst.get(5);
-	cout << "Minimum = " << *bst.minimum() << endl;
-
-	bst.remove(6);
-	cout << "6 was removed" << endl;
-	*bst.get(6);
-	cout << "Minimum = " << *bst.minimum() << endl;
-
-	bst.remove(1);
-	cout << "1 was removed" << endl;
-	*bst.get(1);
-	cout << "Minimum = " << *bst.minimum() << endl;
-
-	if(bst.empty() == 1)
-		cout << "tree is empty" << endl;
-	else
-		cout << "tree NOT empty" << endl;
-	*bst.get(4);
-*/
 }
 
 int main()
