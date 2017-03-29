@@ -68,18 +68,23 @@ template <class KeyType>
 KeyType* BST<KeyType>::get(const KeyType& k)
 {
   BinaryNode<KeyType> *ptr = get(k, root);
-  if (ptr)
+  if (ptr){
+    cout << ptr->data << " is in tree" << endl;
     return &ptr->data;
-  else
-    return (KeyType*) NULL;
+  }
+  else{
+    cout << k << " is NOT in tree" << endl;
+    //return (KeyType*) NULL;
+  }
 }
 
 template <class KeyType>
 BinaryNode<KeyType> * BST<KeyType>::get(const KeyType& k, BinaryNode<KeyType> * ptr)
 {
+
   while (ptr)
   {
-    cout << "prt->data=" << ptr->data << endl;
+
     if (k < ptr->data)
       ptr = ptr->left;
     else if (ptr->data < k)
@@ -113,12 +118,17 @@ void BST<KeyType>::insert(const KeyType& k, BinaryNode<KeyType> * &ptr, BinaryNo
     else
       insert(k, ptr->right, ptr);
   }
+
+  if(ptr->parent != NULL){
+    //cout << "ptr->parent->data= " << ptr->parent->data <<endl;      DELETE HERE SLATE
+  }
 }
 
 // Remove Function
 template <class KeyType>
 void BST<KeyType>::remove(const KeyType& k)
 {
+
   remove(k, root);
 }
 
@@ -126,30 +136,43 @@ void BST<KeyType>::remove(const KeyType& k)
 template <class KeyType>
 void BST<KeyType>::remove(const KeyType& k, BinaryNode<KeyType> * &ptr)
 {
-  if (ptr->left == NULL)
-    transplant(ptr, ptr->right);
-  else if (ptr->right == NULL)
-    transplant(ptr, ptr->left);
+
+
+  BinaryNode<KeyType> *temp;
+  temp = ptr;
+
+  while ((temp->data !=k) and ((temp->left !=NULL) or (temp->right!=NULL))){
+    if(temp->data > k){
+      temp = temp->left;
+    }
+    else
+      temp = temp->right;
+  }
+
+
+
+  if (temp->left == NULL)
+    transplant(temp, temp->right);
+  else if (temp->right == NULL)
+    transplant(temp, temp->left);
   else {
     // Has 2 children -- successor(k) must be on the right
-    BinaryNode<KeyType> *k = minimum(ptr->right);
-    if (k->parent != ptr) {
-      transplant(k, k->right);
-      k->right = ptr->right;
-      //cout << "working" << endl;
-      k->right->parent = k;
+//cout << "temp->left->data= " << temp->left->data <<endl;
+    BinaryNode<KeyType> *y = mintree(temp->right);
+//cout << "y->data="<< y->data <<endl;
+    if (y->parent != temp) {
+      transplant(y, y->right);
+      y->right = ptr->right;
+      y->right->parent = y;
     }
-
-
-    //transplant(ptr, k);
-    //cout << "ptr->data =" << ptr->data << endl;
-    //cout << "k->data =" << k->data << endl;
-    k->left = ptr->left;
-    ptr->left->parent = k;
-    k->parent = ptr->parent;
-    delete ptr;
+    transplant(temp, y);
+    y->left = temp->left;
+    y->left->parent = y;
   }
+
   tree_size--;
+
+
 }
 
 // The Transplant method replaces the subtree rooted at node u with the subtree rooted at node v,
@@ -157,29 +180,33 @@ void BST<KeyType>::remove(const KeyType& k, BinaryNode<KeyType> * &ptr)
 template <class KeyType>
 void BST<KeyType>::transplant(BinaryNode<KeyType> * u, BinaryNode<KeyType> * v)
 {
-  if (u->parent == NULL)
+
+  if (u->parent == NULL){
     root = v;
+  }
   else if (u == u->parent->left)
     u->parent->left = v;
   else if (u == u->parent->right)
     u->parent->right = v;
   if (v != NULL)
     v->parent = u->parent;
+
 }
 
 // Maximum function
 template <class KeyType>
-KeyType* BST<KeyType>::maximum() const
+KeyType* BST<KeyType>::maximum()
 {
-  BinaryNode<KeyType> *ptr = maximum(root);
-  assert(ptr);
-  return ptr->data;
+  BinaryNode<KeyType> *temp = maxtree(root);
+  assert(temp);
+  return &(temp->data);
 }
 
 // Iterative version of maximum
 template <class KeyType>
-int BST<KeyType>::maximum(BinaryNode<KeyType> * ptr)
+BinaryNode<KeyType> * BST<KeyType>::maxtree(BinaryNode<KeyType> * ptr)
 {
+
   if (ptr)
   {
     while (ptr->right)
@@ -190,16 +217,16 @@ int BST<KeyType>::maximum(BinaryNode<KeyType> * ptr)
 
 // Minimum function
 template <class KeyType>
-KeyType* BST<KeyType>::minimum() const
+KeyType* BST<KeyType>::minimum()
 {
-  BinaryNode<KeyType> *ptr = minimum(root);
-  assert(ptr);
-  return ptr->data;
+  BinaryNode<KeyType> *temp = mintree(root);
+  assert(temp);
+  return &(temp->data);
 }
 
 // Iterative version of minimum
 template <class KeyType>
-BinaryNode<KeyType> * BST<KeyType>::minimum(BinaryNode<KeyType> * ptr)
+BinaryNode<KeyType> * BST<KeyType>::mintree(BinaryNode<KeyType> * ptr)
 {
   if (ptr)
   {
@@ -213,17 +240,20 @@ BinaryNode<KeyType> * BST<KeyType>::minimum(BinaryNode<KeyType> * ptr)
 template <class KeyType>
 KeyType* BST<KeyType>::successor(const KeyType& k)
 {
-  successor(k, root);
+  BinaryNode<KeyType> *temp;
+  temp = successor(k, root);
+  return &(temp->data);
 }
 
 template <class KeyType>
-void BST<KeyType>::successor(const KeyType& k, BinaryNode<KeyType> * ptr)
+BinaryNode<KeyType> * BST<KeyType>::successor(const KeyType& k, BinaryNode<KeyType> * ptr)
 {
   if (ptr == NULL)
     return NULL;
   if (ptr->right) {
-    return minimum(ptr->right);
-  } else {
+    return mintree(ptr->right);
+  }
+  else {
     BinaryNode<KeyType> *k = ptr->parent;
     while (k != NULL && ptr == k->right) {
       ptr = k;
@@ -246,7 +276,7 @@ void BST<KeyType>::predecessor(const KeyType& k, BinaryNode<KeyType> * ptr)
   if (ptr == NULL)
     return NULL;
   if (ptr->left) {
-    return maximum(ptr->left);
+    return maxtree(ptr->left);
   } else {
     BinaryNode<KeyType> *k = ptr->parent;
     while (k != NULL && ptr == k->left) {
