@@ -2,8 +2,11 @@
 #define MOVIE_H
 
 #include <iostream>
+#include <stdio.h>
+#include <string.h>
 #include "dictionary.h"
-template <class KeyType>
+
+
 class Movie
 {
 public:
@@ -20,38 +23,22 @@ public:
     cast = cast2;
   }
 
-  ~Movie();
+  //~Movie();
 
   bool operator != (const Movie& movie2){
-    int result;
-    result = strcmp(title, movie2.title);
-    if (result != 0)
-      return false;
-    else
-      return true;
+    return title != movie2.title;
   }
 
   bool operator > (const Movie& movie2){
-    int result;
-    result = strcmp(title, movie2.title);
-    if (result >= 0)
-      return true;
-    else
-      return false;
+    return title > movie2.title;
   }
 
+
   bool operator < (const Movie& movie2){
-    int result;
-    result = strcmp(title, movie2.title);
-    if (result <= 0)
-      return true;
-    else
-      return false;
+    return title < movie2.title;
   }
 
 };
-
-
 
 
 #endif

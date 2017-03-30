@@ -6,7 +6,11 @@
 
 using namespace std;
 
-// Default Constructor
+/*=========================================
+BST()     //default constructor
+Precondition: None
+Postcondition: An empty binary search tree
+=========================================*/
 template <class KeyType>
 BST<KeyType>::BST()
 {
@@ -14,7 +18,12 @@ BST<KeyType>::BST()
   tree_size = 0;
 }
 
-// Copy Constructor
+/*==============================================================
+BST(const BST<KeyType>& tree);  // copy constructor
+Precondition: Must be given a binary tree
+Postcondition: Traverses the tree and makes a copy of its values
+		to transfer to another tree
+==============================================================*/
 template <class KeyType>
 BST<KeyType>::BST(const BST<KeyType>& tree)
 {
@@ -22,8 +31,11 @@ BST<KeyType>::BST(const BST<KeyType>& tree)
   tree_size = tree.tree_size;
 }
 
-// Clone Method
-// Basically a recursive preorder traversal over a tree and copy each node
+/*====================================================================================
+clone(BinaryNode<KeyType> * ptr) // clone method
+Precondition: Must be a given binary tree
+Postcondition: Basically a recursive preorder traversal over a tree and copy each node
+====================================================================================*/
 template <class KeyType>
 void BST<KeyType>::clone(BinaryNode<KeyType> * ptr)
 {
@@ -37,15 +49,22 @@ void BST<KeyType>::clone(BinaryNode<KeyType> * ptr)
   return NULL;
 }
 
-// Destructor
+/*==========================================================
+ ~BST();                             // destructor
+Precondition: None
+Postcondition: Deallocates the tree
+============================================================*/
 template <class KeyType>
 BST<KeyType>::~BST()
 {
   clearTree(root);
 }
 
-// ClearTree Method
-// Basically a recursive postorder traversal over a tree and delete each node
+/*========================================================================================
+// clearTree(BinaryNode<KeyType> * ptr) ClearTree Method
+Precondition: Must be a given binary tree
+Postcondition:  Basically a recursive postorder traversal over a tree and delete each node
+========================================================================================*/
 template <class KeyType>
 void BST<KeyType>::clearTree(BinaryNode<KeyType> * & ptr)
 {
@@ -58,34 +77,51 @@ void BST<KeyType>::clearTree(BinaryNode<KeyType> * & ptr)
   }
 }
 
+/*=========================================================================
+bool empty() const                       // return whether the MPQ is empty
+Precondition: None
+Postcondition: Returns true if the binary tree is empty, false otherwise
+=========================================================================*/
 template <class KeyType>
 bool BST<KeyType>::empty() const
 {
   return tree_size == 0;
 }
 
+/*=================================================================================
+get(const KeyType& k)                   // return first element with key equal to k
+Precondition: Must be a given binary tree
+Postcondition: Recursively calls the hidden 'get' method
+=================================================================================*/
 template <class KeyType>
 KeyType* BST<KeyType>::get(const KeyType& k)
 {
-  BinaryNode<KeyType> *ptr = get(k, root);
+  BinaryNode<KeyType> *ptr = get2(k, root);
+
   if (ptr){
-    cout << ptr->data << " is in tree" << endl;
+    //cout << ptr->data << " is in tree" << endl;
     return &ptr->data;
   }
   else{
-    cout << k << " is NOT in tree" << endl;
+    //cout << k << " is NOT in tree" << endl;
+    cout << "Not in tree" <<endl;
     //return (KeyType*) NULL;
   }
+
 }
 
+/*==============================================================================================
+get(const KeyType& k, BinaryNode>KeyType>* ptr)                      // Protected "get" function
+Precondition: Must be a given binary tree
+Postcondition: Returns a pointer to a node with key k if one exists; otherwise, returns NIL
+===============================================================================================*/
 template <class KeyType>
-BinaryNode<KeyType> * BST<KeyType>::get(const KeyType& k, BinaryNode<KeyType> * ptr)
+BinaryNode<KeyType> * BST<KeyType>::get2(const KeyType& k, BinaryNode<KeyType> * ptr)
 {
 
   while (ptr)
   {
-
-    if (k < ptr->data)
+    if (ptr->data > k)
       ptr = ptr->left;
     else if (ptr->data < k)
       ptr = ptr->right;
@@ -95,14 +131,25 @@ BinaryNode<KeyType> * BST<KeyType>::get(const KeyType& k, BinaryNode<KeyType> * 
   return ptr;
 }
 
+/*=================================================================================
+insert(const KeyType& k)             // insert element with key equal k to the tree
+Precondition: Must be a given binary tree
+Postcondition: Rercursively calls the hidden 'insert' method
+=================================================================================*/
 template <class KeyType>
 void BST<KeyType>::insert(KeyType k)
 {
   insert(k, root, root);
 }
 
+/*============================================================================================================
+insert(const KeyType& k, BinaryNode>KeyType>* ptr, BinaryNode<KeyType* dad)     // Protected "insert" function
+Precondition: Must be a given binary tree
+Postcondition: Begins at the root of the tree and the pointer ptr traces a simple path downward looking for a
+NIL to replace with the input item k
+============================================================================================================*/
 template <class KeyType>
-void BST<KeyType>::insert(const KeyType& k, BinaryNode<KeyType> * &ptr, BinaryNode<KeyType> * &dad)
+void BST<KeyType>::insert( KeyType& k, BinaryNode<KeyType> * &ptr, BinaryNode<KeyType> * &dad)
 {
   if (ptr == NULL)
   {
@@ -124,7 +171,11 @@ void BST<KeyType>::insert(const KeyType& k, BinaryNode<KeyType> * &ptr, BinaryNo
   }
 }
 
-// Remove Function
+/*===================================================================================
+remove(const KeyType& k)       // delete first element with key equal k from the tree
+Precondition: Must be a given binary tree
+Postcondition: Rercursively calls the hidden 'remove' method
+===================================================================================*/
 template <class KeyType>
 void BST<KeyType>::remove(const KeyType& k)
 {
@@ -132,7 +183,16 @@ void BST<KeyType>::remove(const KeyType& k)
   remove(k, root);
 }
 
-
+/*=========================================================================================================
+remove(const KeyType& k, BinaryNode<KeyType> * &ptr)     // Protected "remove" function
+Precondition: Must be a given binary tree
+Postcondition:
+1 - If k has no children, then simply remove it by modifying its parent to replace k with NIL as its child.
+2 - If k has just one child, then we elevate that child to take k's position in the tree by modifying k's
+parent to replace k by k's child.
+3 - If k has 2 children, then we find k's successor y and have y take k's position in the tree. The rest
+of k's original right subtree becomes y's new right subtree, and k's left subtree becomes y's new left subtree.
+========================================================================================================*/
 template <class KeyType>
 void BST<KeyType>::remove(const KeyType& k, BinaryNode<KeyType> * &ptr)
 {
@@ -175,8 +235,12 @@ void BST<KeyType>::remove(const KeyType& k, BinaryNode<KeyType> * &ptr)
 
 }
 
-// The Transplant method replaces the subtree rooted at node u with the subtree rooted at node v,
-// node cout << "worked" << endl;u's parent becomes node v's parent, and u's parent ends up having v as its appropriate child.
+/*==============================================================================================
+transplant(BinaryNode<KeyType> * u, BinaryNode<KeyType> * v)      //Transplant Method
+Precondition: Must be a given binary tree
+Postcondition: Replaces the subtree rooted at node u with the subtree rooted at node v,
+u's parent becomes node v's parent, and u's parent ends up having v as its appropriate child.
+==============================================================================================*/
 template <class KeyType>
 void BST<KeyType>::transplant(BinaryNode<KeyType> * u, BinaryNode<KeyType> * v)
 {
@@ -193,7 +257,11 @@ void BST<KeyType>::transplant(BinaryNode<KeyType> * u, BinaryNode<KeyType> * v)
 
 }
 
-// Maximum function
+/*===========================================================
+maximum()             // return the maximum element
+Precondition: Must be a given binary tree
+Postcondition: Rercursively calls the hidden 'maxtree' method
+============================================================*/
 template <class KeyType>
 KeyType* BST<KeyType>::maximum()
 {
@@ -202,7 +270,11 @@ KeyType* BST<KeyType>::maximum()
   return &(temp->data);
 }
 
-// Iterative version of maximum
+/*================================================================================
+maxtree()                         // Protected "maxtree" function
+Precondition: Must be a given binary tree
+Postcondition: Follows right child pointers from the root until we encounter a NIL
+=================================================================================*/
 template <class KeyType>
 BinaryNode<KeyType> * BST<KeyType>::maxtree(BinaryNode<KeyType> * ptr)
 {
@@ -215,7 +287,11 @@ BinaryNode<KeyType> * BST<KeyType>::maxtree(BinaryNode<KeyType> * ptr)
   return ptr;
 }
 
-// Minimum function
+/*===========================================================
+minimum()             // return the minimum element
+Precondition: Must be a given binary tree
+Postcondition: Rercursively calls the hidden 'mintree' method
+============================================================*/
 template <class KeyType>
 KeyType* BST<KeyType>::minimum()
 {
@@ -224,7 +300,11 @@ KeyType* BST<KeyType>::minimum()
   return &(temp->data);
 }
 
-// Iterative version of minimum
+/*================================================================================
+mintree()                           // Protected "mintree" function
+Precondition: Must be a given binary tree
+Postcondition: Follows left child pointers from the root until we encounter a NIL
+=================================================================================*/
 template <class KeyType>
 BinaryNode<KeyType> * BST<KeyType>::mintree(BinaryNode<KeyType> * ptr)
 {
@@ -236,7 +316,11 @@ BinaryNode<KeyType> * BST<KeyType>::mintree(BinaryNode<KeyType> * ptr)
   return ptr;
 }
 
-// Successor Function
+/*=================================================================================
+get(const KeyType& k)                   // return the successor of k
+Precondition: Must be a given binary tree
+Postcondition: Recursively calls the hidden 'successor' method
+=================================================================================*/
 template <class KeyType>
 KeyType* BST<KeyType>::successor(const KeyType& k)
 {
@@ -245,6 +329,13 @@ KeyType* BST<KeyType>::successor(const KeyType& k)
   return &(temp->data);
 }
 
+/*==========================================================================================================
+successor(const KeyType& k, BinaryNode<KeyType> * ptr)              // Protected "successor" function
+Precondition: Must be a given binary tree
+Postcondition: If the right subtree of node ptr is non-empty, then the successor of ptr is the leftmost node
+in ptr's right subtree. On the other hand, if the right subtree of node ptr is empty and ptr has a successor
+k, then k is the lowest ancestor of ptr whose left child is also an ancestor of ptr
+==========================================================================================================*/
 template <class KeyType>
 BinaryNode<KeyType> * BST<KeyType>::successor(const KeyType& k, BinaryNode<KeyType> * ptr)
 {
@@ -263,13 +354,24 @@ BinaryNode<KeyType> * BST<KeyType>::successor(const KeyType& k, BinaryNode<KeyTy
   }
 }
 
-// Predecessor Function
+/*=================================================================================
+get(const KeyType& k)                   // return the predecessor of k
+Precondition: Must be a given binary tree
+Postcondition: Recursively calls the hidden 'predecessor' method
+=================================================================================*/
 template <class KeyType>
 KeyType* BST<KeyType>::predecessor(const KeyType& k)
 {
   predecessor(k, root);
 }
 
+/*==========================================================================================================
+predecessor(const KeyType& k, BinaryNode<KeyType> * ptr)              // Protected "predecessor" function
+Precondition: Must be a given binary tree
+Postcondition: If the left subtree of node ptr is non-empty, then the predecessor of ptr is the rightmost node
+in ptr's left subtree. On the other hand, if the left subtree of node ptr is empty and ptr has a predecessor
+k, then k is the lowest ancestor of ptr whose right child is also an ancestor of ptr
+==========================================================================================================*/
 template <class KeyType>
 void BST<KeyType>::predecessor(const KeyType& k, BinaryNode<KeyType> * ptr)
 {
@@ -287,13 +389,23 @@ void BST<KeyType>::predecessor(const KeyType& k, BinaryNode<KeyType> * ptr)
   }
 }
 
-// Traversal Functions
+/*==========================================================================
+inOrder()             // return string of elements from an inOrder traversal
+Precondition: Must be a given binary tree
+Postcondition: Rercursively calls the hidden 'inOrder' method
+==========================================================================*/
 template <class KeyType>
 std::string BST<KeyType>::inOrder() const
 {
   inOrder(root);
 }
 
+/*=========================================================================================
+inOrder(BinaryNode<KeyType> *ptr) const                     // Protected "inOrder" function
+Precondition: Must be a given binary tree
+Postcondition: Prints the key of the root of a subtree between printing the values in its
+left subtree and printng those in its right subtree
+=========================================================================================*/
 template <class KeyType>
 std::string BST<KeyType>::inOrder(BinaryNode<KeyType> *ptr) const
 {
@@ -304,20 +416,31 @@ std::string BST<KeyType>::inOrder(BinaryNode<KeyType> *ptr) const
   ostringstream ss;
     ss << inOrder(ptr->left);
     ss << ptr->data << " ";
-    cout << "ptr->data = "<< ptr->data << endl;
     ss << inOrder(ptr->right);
+    cout << ss.str() << endl;
 
   return ss.str();
 
 
 }
 
+/*===========================================================================
+preOrder()             // return string of elements from a preOrder traversal
+Precondition: Must be a given binary tree
+Postcondition: Rercursively calls the hidden 'preOrder' method
+===========================================================================*/
 template <class KeyType>
 std::string BST<KeyType>::preOrder() const
 {
   preOrder(root);
 }
 
+/*=========================================================================================
+preOrder(BinaryNode<KeyType> *ptr) const                    // Protected "preOrder" function
+Precondition: Must be a given binary tree
+Postcondition: Prints the key of the root of a subtree before printing the values in its
+left subtree and printng those in its right subtree
+=========================================================================================*/
 template <class KeyType>
 std::string BST<KeyType>::preOrder(BinaryNode<KeyType> *ptr) const
 {
@@ -330,12 +453,23 @@ std::string BST<KeyType>::preOrder(BinaryNode<KeyType> *ptr) const
   return ss.str();
 }
 
+/*=============================================================================
+postOrder()             // return string of elements from a postOrder traversal
+Precondition: Must be a given binary tree
+Postcondition: Rercursively calls the hidden 'postOrder' method
+=============================================================================*/
 template <class KeyType>
 std::string BST<KeyType>::postOrder() const
 {
   postOrder(root);
 }
 
+/*=========================================================================================
+postOrder(BinaryNode<KeyType> *ptr) const                     // Protected "postOrder" function
+Precondition: Must be a given binary tree
+Postcondition: Prints the key of the root of a subtree after printing the values in its
+left subtree and printng those in its right subtree
+=========================================================================================*/
 template <class KeyType>
 std::string BST<KeyType>::postOrder(BinaryNode<KeyType> *ptr) const
 {

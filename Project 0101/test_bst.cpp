@@ -345,10 +345,10 @@ void test_successor()
 int main()
 {
 	//test_insert();
-	//test_remove();
+	test_remove();
 	//test_maximum();
 	//test_minimum();
-	test_successor();
+	//test_successor();
 
 	return 0;
 }

@@ -46,15 +46,15 @@ public:
   std::string preOrder() const; // return string of elements from a preOrder traversal
   std::string postOrder() const; // return string of elements from a postOrder traversal
 
-protected:
+public:
   /*---------Class Variables----------*/
   BinaryNode<KeyType> *root;
   int tree_size;
 
   /*----------Private Functions----------*/
-  void insert(const KeyType& k, BinaryNode<KeyType> * &ptr, BinaryNode<KeyType> * &dad);
+  void insert( KeyType& k, BinaryNode<KeyType> * &ptr, BinaryNode<KeyType> * &dad);
   void remove(const KeyType& k, BinaryNode<KeyType> * &ptr);
-  BinaryNode<KeyType> * get(const KeyType& k, BinaryNode<KeyType> * ptr);
+  BinaryNode<KeyType> * get2(const KeyType& k, BinaryNode<KeyType> * ptr);
   BinaryNode<KeyType> * maxtree(BinaryNode<KeyType> * ptr);
   BinaryNode<KeyType> * mintree(BinaryNode<KeyType> * ptr);
   BinaryNode<KeyType> * successor(const KeyType& k, BinaryNode<KeyType> * ptr);
