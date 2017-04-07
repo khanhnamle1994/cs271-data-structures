@@ -46,7 +46,7 @@ public:
   std::string preOrder() const; // return string of elements from a preOrder traversal
   std::string postOrder() const; // return string of elements from a postOrder traversal
 
-public:
+private:
   /*---------Class Variables----------*/
   BinaryNode<KeyType> *root;
   int tree_size;
