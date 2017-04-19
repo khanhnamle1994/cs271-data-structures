@@ -1,9 +1,13 @@
-//hash.cpp
-#ifndef hash_cpp
-#define hash_cpp
+// hash.cpp
+// James Le
+// Project 0110
+// CS 271 - Data Structures
+
 #include <iostream>
+#include <stdlib.h>
 #include <string>
 #include <sstream>
+#include "test.cpp"
 
 using namespace std;
 
@@ -16,7 +20,7 @@ template <class KeyType>
 HashTable<KeyType>::HashTable(int numSlots)
 {
     slots = numSlots;
-    List<KeyType> *table[slots];
+    table = new List<KeyType*>[numSlots];
 }
 
 /*====================================================================
@@ -28,8 +32,8 @@ Postcondition: Traverses the hash table and makes a copy of its values
 template <class KeyType>
 HashTable<KeyType>::HashTable(const HashTable<KeyType>& h)
 {
-  slots = h.numSlots;
-  table = h.table;
+    slots = h.numSlots;
+    table = h.table;
 }
 
 /*======================================================
@@ -41,6 +45,7 @@ template <class KeyType>
 HashTable<KeyType>::~HashTable()
 {
     delete[] table;
+    slots = 0;
 }
 
 /*=======================================================================
@@ -52,7 +57,23 @@ otherwise, return NIL
 template <class KeyType>
 KeyType *HashTable<KeyType>::get(const KeyType& k) const
 {
+    int slot = k.hash(slots);
+    List<KeyType*> *cur1 = &table[slot];
+    Node<KeyType*> *cur = cur1->head;
 
+    if(cur == NULL)
+    {
+      throw Empty();
+    }
+
+    while(cur != NULL)
+    {
+      if(*(cur) -> item == k)
+        return cur->item;
+      else
+        cur = cur->next;
+    }
+    throw Key();
 }
 
 /*============================================================================
@@ -66,7 +87,11 @@ of the hashtable
 template <class KeyType>
 void HashTable<KeyType>::insert(KeyType *k)
 {
+    int slot = k -> hash(slots);
+    List<KeyType*> *cur1 = &table[slot];
+    Node<KeyType*> *cur = cur1->head;
 
+    cur1->insert(0, k);
 }
 
 /*=======================================================================================
@@ -78,19 +103,9 @@ record has been removed; otherwise the hashtable is unchanged.
 template <class KeyType>
 void HashTable<KeyType>::remove(const KeyType& k)
 {
-
-}
-
-/*======================================================
-operator=(const HashTable<KeyType>& h)    // Overloaded Operator
-Precondition: Must be a given hash table
-Postcondition: The hashtable that activated this will be made to have the same
-records as h
-=======================================================*/
-template <class KeyType>
-HashTable<KeyType>& HashTable<KeyType>::operator=(const HashTable<KeyType>& h)
-{
-
+    KeyType *temp = get(k);
+    int slot = k.hash(slots);
+    table[slot].remove(temp);
 }
 
 /*======================================================
@@ -99,8 +114,29 @@ toString(int slot) const
 template <class KeyType>
 std::string HashTable<KeyType>::toString(int slot) const
 {
+    List<KeyType*> *cur1 = &table[slot];
+    Node<KeyType*> *cur = cur1->head;
 
+    stringstream s;
+
+    while(cur != NULL)
+    {
+        s << cur->item->key << ", ";
+        cur = cur->next;
+    }
+    string returnString = s.str();
+    return returnString.substr(0, returnString.size() - 2);
 }
 
-
-#endif
+/*======================================================
+stream insertion operator overload
+=======================================================*/
+template <class KeyType>
+ostream& operator<<(ostream& stream, const HashTable<KeyType>& ht)
+{
+  for(int i = 0; i < ht.slots; i++)
+  {
+    stream << ht.toString(i) << "\n";
+  }
+  return stream;
+}

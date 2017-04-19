@@ -1,35 +1,40 @@
-//hash.h
+// hash.h
+// James Le
+// Project 0110
+// CS 271 - Data Structures
 
-#ifndef HASH_H
-#define HASH_H
+#ifndef HASHTABLE
+#define HASHTABLE
 
-#include <cstdlib>
 #include <iostream>
 #include "list.h"
-
 
 template <class KeyType>
 class HashTable
 {
 public:
-
   HashTable(int numSlots);
   HashTable(const HashTable<KeyType>& h);
   ~HashTable();
+
   KeyType* get(const KeyType& k) const;
   void insert(KeyType *k);
   void remove(const KeyType& k);
-  HashTable<KeyType>& operator=(const HashTable<KeyType>& h);
+
   std::string toString(int slot) const;
 
-
 private:
-
   int slots;
-  List<KeyType> *table; // an array of List<KeyType>’s
+  List<KeyType> *table;
 };
 
+template <class KeyType>
+std::ostream& operator<<(std::ostream& stream, const HashTable<KeyType>& ht);
 
-#include "hash.cpp"
+class Empty{ };
+class Key { };
+class Index { };
 
 #endif
+
+#include "hash.cpp"
