@@ -13,12 +13,12 @@ using namespace std;
 
 void test_const()
 {
-  RBT<KeyType> jamesle;
+  RBT<int> jamesle;
 }
 
 void test_empty()
 {
-  RBT<KeyType> jamesle;
+  RBT<int> jamesle;
   assert(jamesle.empty() == 1);
 
   int *test1 = new int;
@@ -30,7 +30,7 @@ void test_empty()
 
 void test_copyConst()
 {
-  RBT<KeyType> jamesle;
+  RBT<int> jamesle;
 
   int *test1 = new int;
   *test1 = 11;
@@ -66,13 +66,13 @@ void test_copyConst()
 
   assert(jamesle.toString() == "5:Black, 9:Red, 11:Black:Root, 13:Black, 19:Red, 23:Red, 57:Black, 92:Red");
 
-  RBT<KeyType> jamesle2(jamesle);
+  RBT<int> jamesle2(jamesle);
   assert(jamesle2.toString() == "5:Black, 9:Red, 11:Black:Root, 13:Black, 19:Red, 23:Red, 57:Black, 92:Red");
 }
 
 void test_get()
 {
-  RBT<KeyType> jamesle;
+  RBT<int> jamesle;
 
   try
   {
@@ -121,7 +121,7 @@ void test_get()
 
 void test_insert()
 {
-  RBT<KeyType> jamesle;
+  RBT<int> jamesle;
 
   int *test1 = new int;
   *test1 = 1;
@@ -195,14 +195,13 @@ void test_insert()
   *test18 = 18;
   jamesle.insert(test18);
 
-  assert(jamesle.toString() == "1:Black, 2:Black, 3:Black, 4:Red, 5:Black, 6:Black, 7:Black, 8:Black:Root,
-  9:Black, 10:Black, 11:Black, 12:Red, 13:Black, 14:Black, 15:Black, 16:Red, 17:Black, 18:Red");
+  assert(jamesle.toString() == "1:Black, 2:Black, 3:Black, 4:Red, 5:Black, 6:Black, 7:Black, 8:Black:Root, 9:Black, 10:Black, 11:Black, 12:Red, 13:Black, 14:Black, 15:Black, 16:Red, 17:Black, 18:Red");
 }
 
 void test_oper()
 {
-  RBT<KeyType> jamesle;
-  RBT<KeyType> jamesle2;
+  RBT<int> jamesle;
+  RBT<int> jamesle2;
 
   int *test1 = new int;
   *test1 = 4;
@@ -245,7 +244,7 @@ void test_oper()
 
 void test_max()
 {
-  RBT<KeyType> jamesle;
+  RBT<int> jamesle;
 
   try
   {
@@ -277,7 +276,7 @@ void test_max()
 
 void test_min()
 {
-  RBT<KeyType> jamesle;
+  RBT<int> jamesle;
 
   try
   {
@@ -309,7 +308,7 @@ void test_min()
 
 void test_pred()
 {
-  RBT<KeyType> jamesle;
+  RBT<int> jamesle;
 
   try
   {
@@ -361,7 +360,7 @@ void test_pred()
 
 void test_succes()
 {
-  RBT<KeyType> jamesle;
+  RBT<int> jamesle;
 
   try
   {
@@ -413,7 +412,7 @@ void test_succes()
 
 void test_pre()
 {
-  RBT<KeyType> jamesle;
+  RBT<int> jamesle;
 
   int *test1 = new int;
   *test1 = 1;
@@ -452,7 +451,7 @@ void test_pre()
 
 void test_toString()
 {
-  RBT<KeyType> jamesle;
+  RBT<int> jamesle;
 
   int *test1 = new int;
   *test1 = 1;
@@ -491,7 +490,7 @@ void test_toString()
 
 void test_post()
 {
-  RBT<KeyType> jamesle;
+  RBT<int> jamesle;
 
   int *test1 = new int;
   *test1 = 1;

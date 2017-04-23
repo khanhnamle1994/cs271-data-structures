@@ -3,8 +3,8 @@
 // Project 0111
 // CS 271: Data Structure
 
-#ifndef RBT
-#define RBT
+#ifndef RBT_H
+#define RBT_H
 
 #include <iostream>
 #include "node.h"

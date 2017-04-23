@@ -18,7 +18,7 @@ public:
   using RBT<KeyType>::insert;
   using RBT<KeyType>::get;
   using RBT<KeyType>::toString;
-  using RBT<KeyType::empty;
+  using RBT<KeyType>::empty;
 };
 
 #endif

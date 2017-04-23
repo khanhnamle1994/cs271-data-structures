@@ -3,6 +3,9 @@
 // Project 0110
 // CS 271 - Data Structures
 
+#ifndef HASH_CPP
+#define HASH_CPP
+
 #include <iostream>
 #include <stdlib.h>
 #include <string>
@@ -140,3 +143,5 @@ ostream& operator<<(ostream& stream, const HashTable<KeyType>& ht)
   }
   return stream;
 }
+
+#endif

@@ -3,6 +3,9 @@
 // Project 0111
 // CS 271: Data Structure
 
+#ifndef RBT_CPP
+#define RBT_CPP
+
 #include <string>
 #include <sstream>
 #include <iostream>
@@ -115,7 +118,7 @@ Node<KeyType>* RBT<KeyType>::getNode(const KeyType& k, Node<KeyType> *node)
   {
     throw Empty();
   }
-  if(node->item == NULL)
+  if(node->key == NULL)
   {
     throw Key();
   }
@@ -314,7 +317,7 @@ void RBT<KeyType>::ins(KeyType *k, Node<KeyType> *node)
     root->parent = nil;
     insertFixup(root);
   }
-  else if(*k <= *(node->key) && node->left = nil)
+  else if(*k <= *(node->key) && node->left == nil)
   {
     node->left = newNode;
     newNode->parent = node;
@@ -322,7 +325,7 @@ void RBT<KeyType>::ins(KeyType *k, Node<KeyType> *node)
     newNode->right = nil;
     insertFixup(newNode);
   }
-  else if(*k > *(node->key) && node->right = nil)
+  else if(*k > *(node->key) && node->right == nil)
   {
     node->right = newNode;
     newNode->parent = node;
@@ -627,3 +630,5 @@ std::ostream& operator<<(std::ostream& stream, const RBT<KeyType>& rbt)
   stream << rbt.toString();
   return stream;
 }
+
+#endif
