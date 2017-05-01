@@ -35,24 +35,7 @@ Copy Constructor
 template<class T>
 DisjointSets<T>::DisjointSets (const DisjointSets<T>& ds)
 {
-  length = ds.length;
-  capacity = ds.capacity;
-
-  // allocate new memory for copy of DisjointSets ds
-  elements = new DSNode<T>*[capacity];
-
-  // copy items from ds to copy of ds
-  for (int i = 0; i < length; i++)
-  {
-    elements[i] = new DSNode<T>(ds.elements[i] -> key);
-    elements[i]->index = ds.elements[i]->index;
-  }
-
-  for (int i = 0; i < length; i++)
-  {
-    int dad = (ds.elements[i]->parent)->index;
-    elements[i]->parent = elements[dad];
-  }
+  copy(ds);
 }
 
 /*=====================================================
@@ -61,7 +44,22 @@ Destructor
 template<class T>
 DisjointSets<T>::~DisjointSets()
 {
-  delete [] elements;
+  destroy();
+}
+
+/*=======================================================
+Assignment Operator
+========================================================*/
+template<class T>
+DisjointSets<T>& DisjointSets<T>::operator= (const DisjointSets<T>& ds)
+{
+  // only destory and copy if 2 MinHeaps are not the same MinHeap
+  if(this != &ds)
+  {
+    destroy();
+    copy(ds);
+  }
+  return *this;
 }
 
 /*==================================================================================
@@ -155,6 +153,43 @@ DSNode<T>* DisjointSets<T>::findSet(DSNode<T>* x)
   if (x->parent != x)
     x->parent = findSet(x->parent); // path compression
   return x->parent;
+}
+
+/*=====================================================
+copy Function
+=====================================================*/
+template<class T>
+void DisjointSets<T>::copy (const DisjointSets<T>& ds)
+{
+  length = ds.length;
+  capacity = ds.capacity;
+
+  // allocate new memory for copy of DisjointSets ds
+  elements = new DSNode<T>*[capacity];
+
+  // copy items from ds to copy of ds
+  for (int i = 0; i < length; i++)
+  {
+    elements[i] = new DSNode<T>(ds.elements[i] -> key);
+    elements[i]->index = ds.elements[i]->index;
+  }
+
+  for (int i = 0; i < length; i++)
+  {
+    int dad = (ds.elements[i]->parent)->index;
+    elements[i]->parent = elements[dad];
+  }
+}
+
+/*======================================================
+destroy Function
+Preconditions: None
+Postconditions: Deallocate memory of disjoint set forest
+=======================================================*/
+template<class T>
+void DisjointSets<T>::destroy()
+{
+  delete [] elements;
 }
 
 /*=====================================================================================
