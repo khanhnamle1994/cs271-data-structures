@@ -17,12 +17,12 @@ using namespace std;
 class Vertex
 {
 public:
-  Vertex(int a);
-  int indent;
-  string color;
+  Vertex(); // default constructor
+  int ident;
+  string color; // vertex attributes
   int finish;
   int dist;
-  Vertex *pred;
+  Vertex *pred; // predecessor vertex
 };
 
 class Pair
@@ -49,7 +49,7 @@ public:
 private:
   int time; // used for DFS(). Record the time
   Vertex **vertices; // array of vertices read from a file
-  Pair **pairElem; // pointer to a Pair object
+  Pair *pairElem; // pointer to a Pair object
   List<Pair> **adjElements; // array pointing to a list of pairs
   int count; // count
   int countE; // number of edges

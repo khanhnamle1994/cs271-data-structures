@@ -115,7 +115,7 @@ Precondition: node is a pointer to DSNode
 Postcondition: returns a copy of node
 =====================================================*/
 template<class T>
-DSNode<T>* DisjointSets<T>::copy (const DSNode<T>& node)
+DSNode<T>* DisjointSets<T>::copy (const DSNode<T>* node)
 {
   DSNode<T> *newNode = new DSNode<T>;
   if(node == NULL)
@@ -195,7 +195,7 @@ DSNode<T>* DisjointSets<T>::makeSet(T* x)
   // error: disjoint set forest is full
   if (length == capacity)
   {
-    throw FullError();
+    throw FullErr();
   }
 
   // create pointer to new node with a key of x

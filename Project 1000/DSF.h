@@ -41,7 +41,7 @@ public:
   std::string toString(); // return a string representation of the disjoint set forest
 
 private:
-  DSNode<T>* copy(const DSNode<T>& node); // copy helper function
+  DSNode<T>* copy(const DSNode<T>* node); // copy helper function
   void link(DSNode<T>* x, DSNode<T>* y); // link two disjoint sets together
 
   DSNode<T> **elements; // array of nodes in the forest
@@ -52,7 +52,7 @@ private:
 template<class T>
 std::ostream& operator<<(std::ostream& stream, const DisjointSets<T>& ds); // ostream operator
 
-class FullError { }; // full exception
+class FullErr { }; // full exception
 class NotFoundError { }; // element not found exception
 
 #include "DSF.cpp"

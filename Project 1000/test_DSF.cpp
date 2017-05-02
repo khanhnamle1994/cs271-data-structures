@@ -46,7 +46,7 @@ void test_constructor()
     assert(set4.toString() == "5:0\n7:0\n20:0\n11:0\n13:0\n22:0\n3:0");
   }
 
-  catch (FullError exception)
+  catch (FullErr exception)
   {
     cout << "Error: forest of disjoint sets is full" << endl;
   }
@@ -81,7 +81,7 @@ void test_makeSet()
     assert(set.toString() == "5:0\n7:0\n20:0\n11:0\n13:0\n22:0\n3:0");
   }
 
-  catch (FullError exception)
+  catch (FullErr exception)
   {
     cout << "Error: forest of disjoint sets is full" << endl;
   }
@@ -127,7 +127,7 @@ void test_unionSets()
     assert(set.toString() == "5:0 -> 7:1 -> 14:2\n7:1 -> 14:2\n20:0 -> 7:1 -> 14:2\n11:0 -> 14:2\n14:2\n22:0 -> 14:2\n31:0 -> 14:2");
   }
 
-  catch (FullError exception)
+  catch (FullErr exception)
   {
     cout << "Error: forest of disjoint sets is full" << endl;
   }
@@ -178,7 +178,7 @@ void test_findSet()
     assert(node5 == set.findSet(node3));
   }
 
-  catch (FullError exception)
+  catch (FullErr exception)
   {
     cout << "Error: forest of disjoint sets is full" << endl;
   }
