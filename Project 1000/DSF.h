@@ -14,10 +14,13 @@ template<class T>
 class DSNode
 {
 public:
-  DSNode(T* v = NULL) : rank(-1), parent(NULL), data(v) { };
-  int rank;
-  DSNode * parent;
-  T* data;
+  DSNode(); // default constructor
+  DSNode(T* initKey); // constructor
+  DSNode(T* initKey, T* initParent); // constructor
+  DSNode(T* initKey, T* initParent, int initRank); // constructor
+  int rank; // rank of each node
+  DSNode<T>* parent; // node pointer to parent node
+  T* key;
 };
 
 template<class T>
@@ -38,8 +41,7 @@ public:
   std::string toString(); // return a string representation of the disjoint set forest
 
 private:
-  void copy(const DisjointSets<T>& ds); // copy sets to this element list
-  void destroy(); // deallocate disjoint set
+  DSNode<T>* copy(const DSNode<T>& node); // copy helper function
   void link(DSNode<T>* x, DSNode<T>* y); // link two disjoint sets together
 
   DSNode<T> **elements; // array of nodes in the forest

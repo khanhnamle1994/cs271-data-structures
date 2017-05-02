@@ -1,5 +1,9 @@
-//pq.cpp
-// Kevin Ly & James Le
+// James Le
+// Project 1000
+// CS 271: Data Structure
+// Dr. Jessen Havill
+// pq.cpp
+
 
 #ifndef pq_cpp
 #define pq_cpp

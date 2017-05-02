@@ -1,3 +1,8 @@
+// James Le
+// Project 1000
+// CS 271: Data Structure
+// Dr. Jessen Havill
+
 #include "DSF.h"
 #include <iostream>
 #include <stdlib.h>

@@ -1,3 +1,8 @@
+// James Le
+// Project 1000
+// CS 271: Data Structure
+// Dr. Jessen Havill
+
 // pq.h
 // This MinPriorityQueue template class assumes that the class KeyType has
 // overloaded the < operator and the << stream operator.
@@ -23,14 +28,6 @@ class MinPriorityQueue : public MinHeap<KeyType>
     bool empty() const;                         // return whether the MPQ is empty
     int length() const;                         // return the number of keys
     std::string toString() const;               // return a string representation of the MPQ
-
-    // traversal
-    void inOrder(int index);
-    void inOrderTraversal();
-    void postOrder(int index);
-    void postOrderTraversal();
-    void preOrder(int index);
-    void preOrderTraversal();
 
     // Specify that MPQ will be referring to the following members of MinHeap<KeyType>.
 

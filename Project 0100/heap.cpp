@@ -1,9 +1,16 @@
-//heap.cpp
-#ifndef heap_cpp
-#define heap_cpp
+// James Le
+// Project 1000
+// CS 271: Data Structure
+// Dr. Jessen Havill
+
+// heap.cpp
+
+#include <cmath>
+#include <cstdlib>
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <cassert>
 
 using namespace std;
 /*==========================================================
@@ -239,9 +246,3 @@ void MinHeap<KeyType>::destroy()
 	~MinHeap();
 
 }
-
-
-
-
-
-#endif
