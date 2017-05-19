@@ -4,10 +4,11 @@
 // C++ program for implementation of a MinHeap template class and Heap Sort algorithm
 
 #include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
+#include <cmath>
+#include <ctime>
 #include <string>
 #include <sstream>
+#include <cassert>
 
 using namespace std;
 
@@ -21,7 +22,7 @@ MinHeap<KeyType>::MinHeap(int n)
 {
   heapSize = 0;
   capacity = n;
-  A = new KeyType*[capacity];
+  A = new KeyType[capacity];
 }
 /*==============================================================================
 MinHeap Array Constructor
@@ -32,12 +33,14 @@ template <class KeyType>
 MinHeap<KeyType>::MinHeap(KeyType initA[], int n)
 {
   capacity = n;
-  A = new KeyType*[capacity];
+  A = new KeyType[capacity];
+  heapSize = 0;
 
   // Copy the array into the heap's internal array
   for (int i = 0; i < n; i++)
     A[i] = initA[i];
 
+  heapSize = capacity;
   // Organize the array into a proper MinHeap Tree
   buildHeap();
 }
@@ -50,15 +53,7 @@ Post: Construct a MinHeap data type with same contents as heap
 template <class KeyType>
 MinHeap<KeyType>::MinHeap(const MinHeap<KeyType>& heap)
 {
-  heapSize = heap.heapSize;
-  capacity = heap.capacity;
-  A = new KeyType*[capacity];
-
-  // copy the array
-  for (int i = 0; i < heapSize; i++)
-    A[i] = heap[i];
-
-  buildHeap();
+  copy(heap);
 }
 
 /*=======================================================
@@ -69,8 +64,7 @@ Post: Clean up the MinHeap class
 template <class KeyType>
 MinHeap<KeyType>::~MinHeap()
 {
-  if(A)
-    delete []A;
+  destroy();
 }
 
 /*===================================================
@@ -81,8 +75,12 @@ Post: Allow assignment of values between MinHeap class
 template<class KeyType>
 MinHeap<KeyType>& MinHeap<KeyType>::operator=(const MinHeap<KeyType>& heap)
 {
-  if(&heap != this)
-    return *this;
+  if(this != &heap)
+  {
+    delete [] A;
+    copy(heap);
+  }
+  return *this;
 }
 
 /*===============================
@@ -91,9 +89,36 @@ String Representation for MinHeap
 template<class KeyType>
 std::string MinHeap<KeyType>::toString() const
 {
-  std::stringstream stream;
-  stream << *this;
-  return stream.str();
+  string heapstr = "[";
+  KeyType updatestring;
+  for(int i = 0; i < capacity; i++)
+  {
+    ostringstream change;
+    if(i != heapSize - 1)
+    {
+      if(i != capacity - 1)
+      {
+        updatestring = A[i];
+        change << updatestring;
+        heapstr += change.str();
+        heapstr += ", ";
+      }
+      else
+      {
+        updatestring = A[i];
+        change << updatestring;
+        heapstr += change.str();
+      }
+    }
+    else if(i == heapSize - 1)
+    {
+      updatestring = A[i];
+      change << updatestring;
+      heapstr += change.str() + " |";
+    }
+  }
+  heapstr += "]";
+  return heapstr;
 }
 
 /*===========================
@@ -102,25 +127,28 @@ Pre: a list of Key Types
 Post: sorted list of Key Types
 ============================*/
 template <class KeyType>
-void MinHeap<KeyType>::heapSort(KeyType* sorted[])
+void MinHeap<KeyType>::heapSort(KeyType sorted[])
 {
-  // Build heap (rearrange array)
-  buildHeap();
-
   // One by one extract an element from heap
   for (int i = heapSize - 1; i >= 0; i--)
   {
     // Move current root to the end
     swap(0,i);
     heapSize--;
-
     // Call min-heapify on the reduced heap
-    heapify(i);
+    heapify(0);
+  }
+
+  for (int j = 0; j < capacity; j++)
+  {
+    sorted[(capacity - 1) - j] = A[j];
   }
 
   // Copy elements in A to sorted
-  for (int i = 0; i < heapSize; i++)
-    A[i] = sorted[i];
+  for (int l = 0; l < capacity; l++)
+  {
+    A[l] = sorted[l];
+  }
 }
 
 /*==============================================
@@ -136,22 +164,20 @@ void MinHeap<KeyType>::heapify(int index)
   int r = rightChild(index);
 
   // If left child is smaller than root
-  if (l <= heapSize && *(A[l]) < *(A[smallest]))
+  if (l < heapSize && A[l] < A[smallest])
     smallest = l;
 
   // If right child is smaller than smallest so far
-  if (r <= heapSize && *(A[r]) < *(A[smallest]))
+  if (r < heapSize && A[r] < A[smallest])
     smallest = r;
 
   // If smallest is not root
   if (smallest != index)
   {
     swap(index, smallest);
-
     // Recursively heapify the affected sub-tree
     heapify(smallest);
   }
-  return;
 }
 
 /*============================================
@@ -162,8 +188,7 @@ Post: A heap that is sorted in decreasing order
 template <class KeyType>
 void MinHeap<KeyType>::buildHeap()
 {
-  heapSize = capacity;
-  for (int i = (capacity/2); i >= 0; i--)
+  for (int i = ((capacity/2) - 1); i >= 0; i--)
   {
     heapify(i);
   }
@@ -177,7 +202,7 @@ Post: The 2 elements' index positions are swapped
 template <class KeyType>
 void MinHeap<KeyType>::swap(int index1, int index2)
 {
-  KeyType* temp = A[index1];
+  KeyType temp = A[index1];
   A[index1] = A[index2];
   A[index2] = temp;
 }
@@ -190,7 +215,14 @@ Post: Construct a MinHeap data type with same contents as heap
 template <class KeyType>
 void MinHeap<KeyType>::copy(const MinHeap<KeyType>& heap)
 {
-  MinHeap(A);
+  heapSize = heap.heapSize;
+  capacity = heap.capacity;
+
+  A = new KeyType[heap.capacity];
+  for (int i = 0; i < heap.heapSize; i++)
+  {
+    A[i] = heap.A[i];
+  }
 }
 
 /*===============================================
@@ -201,7 +233,19 @@ Post: Clean up the MinHeap class
 template <class KeyType>
 void MinHeap<KeyType>::destroy()
 {
-  ~MinHeap();
+  delete [] A;
+  heapSize = 0;
+  capacity = 0;
 }
 
-#endif
+/*====================================================================
+Overloading Operator
+Pre: When all the heap or array is turned into a string
+Post: When all of the heap is converted to a string
+====================================================================*/
+template <class KeyType>
+std::ostream& operator<<(std::ostream& stream, const MinHeap<KeyType>& heap)
+{
+  stream << heap.toString();
+  return stream;
+}

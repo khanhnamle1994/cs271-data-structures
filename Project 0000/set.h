@@ -1,13 +1,13 @@
 // James Le - CS 271
-// set.h - A Set ADT.
+// set.h - A Set ADT
 // Jan 25, 2017
+// This implementation uses a linked list
 
 #ifndef SET_H
 #define SET_H
 
 #include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
+
 using namespace std;
 
 template <class Element>
@@ -43,6 +43,7 @@ class Set
    void insert(const Element& x);           // add x to the set
    void remove(const Element& x);           // remove x from the set
    int cardinality() const;                 // returns size of the set
+   void print();                            // helper method
    bool empty() const;                      // returns true if empty, false o/w
    bool contains(const Element& x) const;   // true if x is in set, false o/w
 
@@ -54,8 +55,6 @@ class Set
 
    Set<Element>& operator=(const Set<Element>& s);         // assignment operator
 
-   string toString() const;     // return a string representation of the set
-
    // stream insertion operator
    friend ostream& operator<< <Element>(ostream& stream, const Set<Element>& s);
 
@@ -63,7 +62,7 @@ class Set
 
    Node<Element> *head;
    int length;
-   Node<Element> N; // inclusion to node class
+   Node<Element> *pointerToNode(int index);
 
    void copy(const Set<Element>& s);   // copy the set s to this set
    void destroy();                     // delete all elements in the set
